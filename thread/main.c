@@ -33,7 +33,7 @@ int main(){
         num = atoi(&str[1][2]);
     }
     fclose(fpRead);
-    printf("线程数量%d\n需要加到多少%d\n", thrd_num,num);
+    printf("线程数量：%d\n累加数：%d\n", thrd_num,num);
 
     //创建线程
     pthread_t thrd[thrd_num];
@@ -45,7 +45,7 @@ int main(){
     for(j = 1; j < thrd_num; j++) {
         pthread_join(thrd[j], NULL);
     }
-    printf("sum = %ld\n", sum);
+    // printf("测试结果sum: %ld\n", sum);
     //将结果写入文件
     FILE *fpWrite=fopen("output.txt","w");    //怎么改成相对路径
     if(fpWrite == NULL)
