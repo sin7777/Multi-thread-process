@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <time.h>       //时间计数1
-#include<sys/time.h> //时间计数2
+#include <time.h>     
 #include <pthread.h>
 
 // #define CLOCKS_PER_SEC ((clock_t)1000)
