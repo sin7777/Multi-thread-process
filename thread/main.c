@@ -15,30 +15,22 @@ pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
 
 int main(){
     int thrd_num = 0;    //线程数量,创建数组
-    char str[4][10];
-    ////////////////////////////
+    char str[1][10];
     clock_t start, finish;
     double  duration;
-    ////////////////////////////
-     //定义两个结构体，来记录开始和结束时间
-    // struct  timeval start;
-    // struct  timeval end;
-    // //记录两个时间差
-    // unsigned  long duration;
-    ////////////////////////////////
 
     start = clock();
-    // gettimeofday(&start,NULL);
     //读取文件
-    FILE *fpRead=fopen("input/input.txt","r");  //怎么改成相对路径
+    FILE *fpRead=fopen("input.txt","r");  //怎么改成相对路径
     if(fpRead==NULL)
     {  
         printf("读取无效文件");
         return 0;
     }else
     {
-        fscanf(fpRead,"%s %s %d %s %s %d",str[1],str[2],&thrd_num,str[3],str[4],&num);
-        // fscanf(fpRead,"%d ",&num);
+        fscanf(fpRead,"%s %s",str[0],str[1]);
+        thrd_num = atoi(&str[0][2]);
+        num = atoi(&str[1][2]);
     }
     fclose(fpRead);
     printf("线程数量%d\n需要加到多少%d\n", thrd_num,num);
@@ -55,7 +47,7 @@ int main(){
     }
     printf("sum = %ld\n", sum);
     //将结果写入文件
-    FILE *fpWrite=fopen("output/output.txt","w");    //怎么改成相对路径
+    FILE *fpWrite=fopen("output.txt","w");    //怎么改成相对路径
     if(fpWrite == NULL)
     {
         printf("输出无效文件\n");
@@ -68,8 +60,6 @@ int main(){
 
     finish = clock();
     duration = (double)(finish - start) / CLOCKS_PER_SEC;
-    // gettimeofday(&end,NULL);
-    // duration = 1000000 * (end.tv_sec-start.tv_sec)+ end.tv_usec-start.tv_usec;
     printf( "程序耗时：%f seconds\n", duration );
     return 0;
 

@@ -1,2 +1,29 @@
 #!/bin/sh
-echo "hello"
+echo "hello,you are in test"
+
+inputPath="./input_test"
+outputPath="./output_test"
+
+#遍历文件
+for file in `ls ${inputPath}`
+    do
+    echo ${file}
+    for line in `cat ./${inputPath}/${file}`
+    do
+    sed -i '1d' input.txt
+    echo $line >> input.txt
+    done
+    #执行文件
+    # make
+    ./multisum 
+    #比较结果
+    output=$(cat output.txt)
+    outputTest=$(cat ./${outputPath}/${file})
+    if [ $output==$outputTest ]
+    then
+        echo "测试正确"
+    else
+        echo "测试错误"
+    fi
+
+done
