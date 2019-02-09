@@ -10,12 +10,13 @@ for file in `ls ${inputPath}`
     echo "————————————————————————————————"${file}
     for line in `cat ${inputPath}/${file}`
         do
-        sed -i '1d' input.txt
-        echo $line >> input.txt
+        sed -i '1d' ./input.txt
+        # echo $line
+        echo $line >> ./input.txt
     done
     #执行文件
     # make
-    ./multisum 
+    ./multisum
     #比较结果
     output=$(cat output.txt)
     output_test=$(cat ${outputPath}/${file})
