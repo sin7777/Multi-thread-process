@@ -20,7 +20,7 @@ for file in `ls ${inputPath}`
     #比较结果
     output=$(cat output.txt)
     output_test=$(cat ${outputPath}/${file})
-    echo "测试结果:"${output}
+    echo "测试结果        :"${output}
     echo "测试用例给出结果:"${output_test}
     if [ $output -eq $output_test ]
         then
