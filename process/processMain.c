@@ -38,18 +38,18 @@ int main(){
         printf( "程序耗时：%f seconds\n", duration );
 
         //输出时间用于测算耗时情况
-        FILE *fpAddTime = fopen("time.txt","a");
-        if(fpAddTime == NULL)
-        {
-            printf("定向输出时间无效\n");
-            return 0;
-        }else
-        {
-            // fprintf(fpAddTime,"%d   ",thrd_num);
-            // fprintf(fpAddTime,"%d   ",num);
-            fprintf(fpAddTime,"%f\n",duration*1000);
-        }
-        fclose(fpAddTime);
+        // FILE *fpAddTime = fopen("time.txt","a");
+        // if(fpAddTime == NULL)
+        // {
+        //     printf("定向输出时间无效\n");
+        //     return 0;
+        // }else
+        // {
+        //     // fprintf(fpAddTime,"%d   ",thrd_num);
+        //     // fprintf(fpAddTime,"%d   ",num);
+        //     fprintf(fpAddTime,"%f\n",duration*1000);
+        // }
+        // fclose(fpAddTime);
     }
     
     return 0;

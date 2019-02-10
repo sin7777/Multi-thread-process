@@ -3,9 +3,6 @@
 #include <time.h>     
 #include <pthread.h>
 
-
-// #define CLOCKS_PER_SEC ((clock_t)1000)
-
 int current_num = 1;  //当前的数
 int num = 0; //需要加到多少
 long sum = 0; //结果
@@ -45,7 +42,7 @@ int main(){
     for(j = 1; j < thrd_num; j++) {
         pthread_join(thrd[j], NULL);
     }
-    // printf("测试结果sum: %ld\n", sum);
+    printf("累加结果: %ld\n", sum);
     //将结果写入文件
     FILE *fpWrite=fopen("output.txt","w");    //怎么改成相对路径
     if(fpWrite == NULL)
@@ -63,18 +60,18 @@ int main(){
     printf( "程序耗时：%f mseconds\n", duration*1000 );
 
     //输出时间用于测算耗时情况
-    FILE *fpAddTime = fopen("time.txt","a");
-    if(fpAddTime == NULL)
-    {
-        printf("定向输出时间无效\n");
-        return 0;
-    }else
-    {
-        fprintf(fpAddTime,"%d   ",thrd_num);
-        fprintf(fpAddTime,"%d   ",num);
-        fprintf(fpAddTime,"%f\n",duration*1000);
-    }
-    fclose(fpAddTime);
+    // FILE *fpAddTime = fopen("time.txt","a");
+    // if(fpAddTime == NULL)
+    // {
+    //     printf("定向输出时间无效\n");
+    //     return 0;
+    // }else
+    // {
+    //     // fprintf(fpAddTime,"%d   ",thrd_num);
+    //     // fprintf(fpAddTime,"%d   ",num);
+    //     fprintf(fpAddTime,"%f\n",duration*1000);
+    // }
+    // fclose(fpAddTime);
 
     return 0;
 
