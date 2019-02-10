@@ -62,8 +62,6 @@ int increse(){
     int i;
     struct mt* mm;
 
-    
-
     // 建立映射区
     mm = mmap(NULL,sizeof(*mm),PROT_READ|PROT_WRITE,MAP_SHARED|MAP_ANON,-1,0);
 
@@ -105,10 +103,7 @@ int increse(){
     {
         printf("创建进程无效\n");
     }
-    else if (status == 0) //每一个子进程都会运行的代码
-    {
-        //sub process
-        for( i=0; i<mm->num;i++ )
+    for( i=0; i<mm->num;i++ )
         {
             pthread_mutex_lock(&mm->mutex);
             if(mm->current_num <= mm->num)
@@ -120,43 +115,65 @@ int increse(){
             pthread_mutex_unlock(&mm->mutex);
             // sleep(1);
         }
-        pthread_mutex_unlock(&mm->mutex);
-    }
-    else
-    {
-        //parent process
-        for( i=0;i<mm->num;i++)
-        {
-            // sleep(1);
-            pthread_mutex_lock(&mm->mutex);
-            if(mm->current_num <= mm->num)
-            {
-                mm->sum += mm->current_num;
-                mm->current_num ++;
-                // printf("-parent--------------sum    %d\n",mm->sum);
-            }
-            pthread_mutex_unlock(&mm->mutex);
+    // else if (status == 0) //每一个子进程都会运行的代码
+    // {
+    //     //sub process
+    //     for( i=0; i<mm->num;i++ )
+    //     {
+    //         pthread_mutex_lock(&mm->mutex);
+    //         if(mm->current_num <= mm->num)
+    //         {
+    //             mm->sum += mm->current_num;
+    //             mm->current_num ++;
+    //             // printf("-child--------------sum    %d\n",mm->sum);
+    //         }
+    //         pthread_mutex_unlock(&mm->mutex);
+    //         // sleep(1);
+    //     }
+    //     pthread_mutex_unlock(&mm->mutex);
+    // }
+    // else
+    // {
+    //     //parent process
+    //     for( i=0;i<mm->num;i++)
+    //     {
+    //         // sleep(1);
+    //         pthread_mutex_lock(&mm->mutex);
+    //         if(mm->current_num <= mm->num)
+    //         {
+    //             mm->sum += mm->current_num;
+    //             mm->current_num ++;
+    //             // printf("-parent--------------sum    %d\n",mm->sum);
+    //         }
+    //         pthread_mutex_unlock(&mm->mutex);
         
-        }
-        wait(NULL);
-    }
+    //     }
+    //     wait(NULL);
+    // }
 
     pthread_mutexattr_destroy(&mm->mutexattr);  // 销毁 mutex 属性对象
     pthread_mutex_destroy(&mm->mutex);          // 销毁 mutex 锁
 
-    //将结果写入文件
-    // printf("累加结果为：%ld\n",mm->sum);
-    FILE *fpWrite=fopen("output.txt","w");    //怎么改成相对路径
-    if(fpWrite == NULL)
+    if(status == 0)
     {
-        printf("输出无效文件\n");
-        return 0;
+        //sub
     }else
     {
-        fprintf(fpWrite,"%ld",mm->sum);
+        //parent
+        //将结果写入文件
+        printf("累加结果为：%ld\n",mm->sum);
+        FILE *fpWrite=fopen("output.txt","w");    //怎么改成相对路径
+        if(fpWrite == NULL)
+        {
+            printf("输出无效文件\n");
+            return 0;
+        }else
+        {
+            fprintf(fpWrite,"%ld",mm->sum);
+        }
+        fclose(fpWrite);
     }
-    fclose(fpWrite);
-
+    
     return 0;
 
 }
