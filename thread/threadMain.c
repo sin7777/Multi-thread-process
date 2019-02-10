@@ -3,6 +3,7 @@
 #include <time.h>     
 #include <pthread.h>
 
+
 // #define CLOCKS_PER_SEC ((clock_t)1000)
 
 int current_num = 1;  //当前的数
@@ -59,7 +60,22 @@ int main(){
 
     finish = clock();
     duration = (double)(finish - start) / CLOCKS_PER_SEC;
-    printf( "程序耗时：%f seconds\n", duration );
+    printf( "程序耗时：%f mseconds\n", duration*1000 );
+
+    //输出时间用于测算耗时情况
+    FILE *fpAddTime = fopen("time.txt","a");
+    if(fpAddTime == NULL)
+    {
+        printf("定向输出时间无效\n");
+        return 0;
+    }else
+    {
+        fprintf(fpAddTime,"%d   ",thrd_num);
+        fprintf(fpAddTime,"%d   ",num);
+        fprintf(fpAddTime,"%f\n",duration*1000);
+    }
+    fclose(fpAddTime);
+
     return 0;
 
 }
