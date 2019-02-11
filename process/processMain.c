@@ -33,6 +33,7 @@ int main(){
     else
     {
         wait(NULL);
+        // printf("子进程执行完毕\n");
         finish = clock();
         duration = (double)(finish - start) / CLOCKS_PER_SEC;
         printf( "程序耗时：%f seconds\n", duration );
@@ -93,17 +94,29 @@ int increse(){
 
     //创建进程
     int j;
-    pid_t status;
-    for (j = 0; j < process_num-1; j++)
+    int status;
+    if(process_num <= 1){
+        status = 1;
+    }else
     {
-        status = fork();
-        if (status == 0 || status == -1) break;//每次循环时，假设发现是子进程就直接从创建子进程的循环中跳出来。不让你进入循环，这样就保证了每次仅仅有父进程来做循环创建子进程的工作
+        for (j = 0; j < process_num-1; j++)
+        {
+            // printf("%d\n",status);
+            status = fork();
+            if (status == 0 || status == -1)
+            {
+                // printf("sub1\n");
+            }
+            break;//每次循环时，假设发现是子进程就直接从创建子进程的循环中跳出来。不让你进入循环，这样就保证了每次仅仅有父进程来做循环创建子进程的工作
+        }
     }
+    
     if (status == -1)
     {
         printf("创建进程无效\n");
-    }
-    for( i=0; i<mm->num;i++ )
+    }else
+    {
+        for( i=0; i<mm->num;i++ )
         {
             pthread_mutex_lock(&mm->mutex);
             if(mm->current_num <= mm->num)
@@ -115,41 +128,7 @@ int increse(){
             pthread_mutex_unlock(&mm->mutex);
             // sleep(1);
         }
-    // else if (status == 0) //每一个子进程都会运行的代码
-    // {
-    //     //sub process
-    //     for( i=0; i<mm->num;i++ )
-    //     {
-    //         pthread_mutex_lock(&mm->mutex);
-    //         if(mm->current_num <= mm->num)
-    //         {
-    //             mm->sum += mm->current_num;
-    //             mm->current_num ++;
-    //             // printf("-child--------------sum    %d\n",mm->sum);
-    //         }
-    //         pthread_mutex_unlock(&mm->mutex);
-    //         // sleep(1);
-    //     }
-    //     pthread_mutex_unlock(&mm->mutex);
-    // }
-    // else
-    // {
-    //     //parent process
-    //     for( i=0;i<mm->num;i++)
-    //     {
-    //         // sleep(1);
-    //         pthread_mutex_lock(&mm->mutex);
-    //         if(mm->current_num <= mm->num)
-    //         {
-    //             mm->sum += mm->current_num;
-    //             mm->current_num ++;
-    //             // printf("-parent--------------sum    %d\n",mm->sum);
-    //         }
-    //         pthread_mutex_unlock(&mm->mutex);
-        
-    //     }
-    //     wait(NULL);
-    // }
+    }
 
     pthread_mutexattr_destroy(&mm->mutexattr);  // 销毁 mutex 属性对象
     pthread_mutex_destroy(&mm->mutex);          // 销毁 mutex 锁
@@ -157,10 +136,12 @@ int increse(){
     if(status == 0)
     {
         //sub
+        // printf("sub\n");
     }else
     {
         //parent
-        //将结果写入文件
+        // 将结果写入文件
+        wait(NULL);
         printf("累加结果为：%ld\n",mm->sum);
         FILE *fpWrite=fopen("output.txt","w");    //怎么改成相对路径
         if(fpWrite == NULL)
@@ -173,7 +154,6 @@ int increse(){
         }
         fclose(fpWrite);
     }
-    
     return 0;
 
 }
